@@ -1,0 +1,150 @@
+.admin-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.admin-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #2C2D2E;
+}
+
+.admin-card {
+  background: #FFFFFF;
+  border-radius: 8px;
+  padding: 24px;
+  border: 1px solid #E5E7EB;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #2C2D2E;
+  margin-bottom: 16px;
+}
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-input {
+  padding: 10px 14px;
+  border: 1px solid #D3D9E0;
+  border-radius: 6px;
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.admin-input:focus {
+  border-color: #4A7BFF;
+}
+
+.btn-create {
+  background-color: #4A7BFF;
+  color: #FFFFFF;
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  transition: background-color 0.15s;
+  width: fit-content;
+}
+
+.btn-create:hover {
+  background-color: #3A6BE0;
+}
+
+.admin-message {
+  font-size: 15px;
+  font-weight: 500;
+  padding: 10px 16px;
+  background: #F5F7FA;
+  border-radius: 6px;
+}
+
+.admin-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: #F5F7FA;
+  border-radius: 6px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.admin-item-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.admin-item-title {
+  font-weight: 600;
+  color: #2C2D2E;
+}
+
+.admin-item-prize {
+  color: #4A7BFF;
+  font-weight: 500;
+}
+
+.admin-item-date {
+  font-size: 13px;
+  color: #818C99;
+}
+
+.admin-item-status {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.status-active {
+  background-color: #E8F5E9;
+  color: #4CAF50;
+}
+
+.status-finished {
+  background-color: #F5F5F5;
+  color: #9E9E9E;
+}
+
+.admin-item-winner {
+  font-size: 13px;
+  color: #F59E0B;
+  font-weight: 600;
+}
+
+.btn-winner {
+  background-color: #FF9800;
+  color: #FFFFFF;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.15s;
+  white-space: nowrap;
+}
+
+.btn-winner:hover {
+  background-color: #F57C00;
+}
+
+.empty-text {
+  color: #818C99;
+  font-size: 15px;
+}
