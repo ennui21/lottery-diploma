@@ -2,25 +2,19 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Header.css';
 
-const API_URL = 'https://diplom-esin.onrender.com/api';
-
 function Header({ vkUser, onLogin, onLogout }) {
-  const [showLogin, setShowLogin] = useState(false);
   const [profile, setProfile] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
-    if (!profile.trim()) {
-      setError('Введите ссылку на профиль');
-      return;
-    }
+    if (!profile.trim()) return;
 
     setLoading(true);
     setError('');
 
     try {
-      const res = await fetch(`${API_URL}/auth/login`, {
+      const res = await fetch('https://diplom-esin.onrender.com/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ profile })
@@ -30,13 +24,12 @@ function Header({ vkUser, onLogin, onLogout }) {
 
       if (res.ok) {
         onLogin(data);
-        setShowLogin(false);
         setProfile('');
       } else {
-        setError(data.error || 'Ошибка входа');
+        setError(data.error || 'Ошибка');
       }
     } catch (err) {
-      setError('Ошибка соединения с сервером');
+      setError('Нет связи с сервером');
     } finally {
       setLoading(false);
     }
@@ -58,39 +51,40 @@ function Header({ vkUser, onLogin, onLogout }) {
               <button className="btn-logout" onClick={onLogout}>Выйти</button>
             </div>
           ) : (
-            <button className="btn-login" onClick={() => setShowLogin(!showLogin)}>
-              Войти через VK
-            </button>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+              <input
+                type="text"
+                placeholder="Ссылка VK или ID"
+                value={profile}
+                onChange={(e) => setProfile(e.target.value)}
+                style={{
+                  padding: '8px 12px',
+                  border: '1px solid #D3D9E0',
+                  borderRadius: '6px',
+                  fontSize: '14px',
+                  width: '180px'
+                }}
+              />
+              <button
+                onClick={handleLogin}
+                disabled={loading}
+                style={{
+                  background: '#4A7BFF',
+                  color: '#FFFFFF',
+                  padding: '8px 16px',
+                  borderRadius: '6px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontWeight: '600'
+                }}
+              >
+                {loading ? '...' : 'Войти'}
+              </button>
+              {error && <span style={{ color: 'red', fontSize: '12px' }}>{error}</span>}
+            </div>
           )}
         </div>
       </div>
-
-            {showLogin && (
-        <div className="login-modal" onClick={() => setShowLogin(false)}>
-          <div className="login-modal-content" onClick={(e) => e.stopPropagation()}>
-            <h3>Вход через VK</h3>
-            <p>Введите ссылку на ваш профиль, имя или ID:</p>
-            <input
-              type="text"
-              placeholder="vk.com/volgr или volgr"
-              value={profile}
-              onChange={(e) => setProfile(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
-              className="login-input"
-              autoFocus
-            />
-            {error && <p className="login-error">{error}</p>}
-            <div className="login-buttons">
-              <button onClick={handleLogin} disabled={loading} className="btn-login-submit">
-                {loading ? 'Вход...' : 'Войти'}
-              </button>
-              <button onClick={() => { setShowLogin(false); setError(''); }} className="btn-login-cancel">
-                Отмена
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </header>
   );
 }
