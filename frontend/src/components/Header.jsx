@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Header.css';
 
-const API_URL = process.env.REACT_APP_API_URL || 'https://diplom-esin.onrender.com/api';
+const API_URL = 'https://diplom-esin.onrender.com/api';
 
 function Header({ vkUser, onLogin, onLogout }) {
   const [showLogin, setShowLogin] = useState(false);
@@ -84,7 +84,7 @@ function Header({ vkUser, onLogin, onLogout }) {
               <button onClick={handleLogin} disabled={loading} className="btn-login-submit">
                 {loading ? 'Вход...' : 'Войти'}
               </button>
-              <button onClick={() => setShowLogin(false)} className="btn-login-cancel">
+              <button onClick={() => { setShowLogin(false); setError(''); }} className="btn-login-cancel">
                 Отмена
               </button>
             </div>
