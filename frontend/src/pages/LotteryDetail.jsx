@@ -4,12 +4,6 @@ import './LotteryDetail.css';
 
 const API_URL = 'https://diplom-esin.onrender.com/api';
 
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import './LotteryDetail.css';
-
-const API_URL = 'https://diplom-esin.onrender.com/api';
-
 function WinnerInfo({ winnerId }) {
   const [winner, setWinner] = useState(null);
 
