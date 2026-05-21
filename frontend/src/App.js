@@ -7,6 +7,7 @@ import LotteryDetail from './pages/LotteryDetail';
 import AdminPage from './pages/AdminPage';
 import RulesPage from './pages/RulesPage';
 import WinnersPage from './pages/WinnersPage';
+import ProfilePage from './pages/ProfilePage';
 import './App.css';
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
           <Route path="/admin" element={<AdminPage vkUser={vkUser} />} />
           <Route path="/rules" element={<RulesPage />} />
           <Route path="/winners" element={<WinnersPage />} />
+          <Route path="/profile" element={<ProfilePage vkUser={vkUser} />} />
         </Routes>
       </main>
       <Footer />

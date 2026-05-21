@@ -24,26 +24,13 @@
   font-size: 20px;
   font-weight: 700;
   color: #4A7BFF;
-  letter-spacing: -0.3px;
 }
 
-.logo-icon {
-  font-size: 24px;
-}
+.logo-icon { font-size: 24px; }
 
-.logo-text {
-  font-size: 20px;
-}
+.header-nav { display: flex; gap: 4px; }
 
-/* Десктопная навигация */
-.header-nav {
-  display: flex;
-  gap: 8px;
-}
-
-.desktop-nav {
-  display: flex;
-}
+.desktop-nav { display: flex; }
 
 .nav-link {
   font-size: 14px;
@@ -55,23 +42,12 @@
   transition: all 0.15s;
 }
 
-.nav-link:hover {
-  background: #F0F2F5;
-  color: #2C2D2E;
-}
+.nav-link:hover { background: #F0F2F5; color: #2C2D2E; }
 
-.nav-link.active {
-  background: #EBF0FF;
-  color: #4A7BFF;
-  font-weight: 600;
-}
+.nav-link.active { background: #EBF0FF; color: #4A7BFF; font-weight: 600; }
 
-.header-actions {
-  display: flex;
-  align-items: center;
-}
+.header-actions { display: flex; align-items: center; gap: 8px; }
 
-/* Кнопка входа */
 .btn-login {
   background-color: #4A7BFF;
   color: #FFFFFF;
@@ -81,33 +57,22 @@
   font-weight: 600;
   border: none;
   cursor: pointer;
-  transition: background-color 0.15s;
 }
 
-.btn-login:hover {
-  background-color: #3A6BE0;
-}
+.btn-login:hover { background-color: #3A6BE0; }
 
-/* Меню пользователя */
-.user-menu {
-  position: relative;
-}
-
-.user-trigger {
+/* Ссылка на профиль */
+.user-info-link {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 6px 12px;
   border-radius: 8px;
-  border: none;
-  background: #F5F7FA;
-  cursor: pointer;
+  text-decoration: none;
   transition: background 0.15s;
 }
 
-.user-trigger:hover {
-  background: #EBF0FF;
-}
+.user-info-link:hover { background: #EBF0FF; }
 
 .user-avatar {
   width: 32px;
@@ -122,93 +87,6 @@
   color: #2C2D2E;
 }
 
-.menu-arrow {
-  font-size: 12px;
-  transition: transform 0.2s;
-  color: #818C99;
-}
-
-.menu-arrow.open {
-  transform: rotate(180deg);
-}
-
-/* Дропдаун */
-.dropdown-menu {
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
-  min-width: 220px;
-  padding: 8px;
-  z-index: 200;
-  animation: slideDown 0.2s ease;
-}
-
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.dropdown-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
-}
-
-.dropdown-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.dropdown-name {
-  font-size: 15px;
-  font-weight: 600;
-  color: #2C2D2E;
-}
-
-.dropdown-id {
-  font-size: 12px;
-  color: #818C99;
-}
-
-.dropdown-divider {
-  height: 1px;
-  background: #F0F2F5;
-  margin: 6px 0;
-}
-
-.dropdown-item {
-  display: block;
-  padding: 10px 12px;
-  border-radius: 6px;
-  font-size: 14px;
-  color: #2C2D2E;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background 0.1s;
-  border: none;
-  background: none;
-  width: 100%;
-  text-align: left;
-}
-
-.dropdown-item:hover {
-  background: #F5F7FA;
-}
-
-.dropdown-item.logout {
-  color: #E53935;
-}
-
-.dropdown-item.logout:hover {
-  background: #FFEBEE;
-}
-
 /* Мобильная кнопка */
 .mobile-menu-btn {
   display: none;
@@ -217,17 +95,16 @@
   font-size: 24px;
   cursor: pointer;
   color: #626D7A;
-  padding: 4px 8px;
 }
 
 /* Мобильная навигация */
 .mobile-nav {
+  display: none;
   background: white;
   border-top: 1px solid #E5E7EB;
   padding: 8px 20px;
-  display: none;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 
 .mobile-nav-link {
@@ -236,12 +113,18 @@
   font-size: 15px;
   color: #2C2D2E;
   text-decoration: none;
-  transition: background 0.15s;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
 }
 
-.mobile-nav-link:hover {
-  background: #F5F7FA;
-}
+.mobile-nav-link:hover { background: #F5F7FA; }
+
+.logout-btn { color: #E53935; }
+.logout-btn:hover { background: #FFEBEE; }
+.login-btn { color: #4A7BFF; font-weight: 600; }
 
 /* Модальное окно */
 .modal-overlay {
@@ -265,31 +148,19 @@
 
 .modal-close {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 12px; right: 12px;
   background: none;
   border: none;
   font-size: 20px;
   cursor: pointer;
   color: #818C99;
-  padding: 4px 8px;
 }
 
-.modal-close:hover {
-  color: #2C2D2E;
-}
+.modal-close:hover { color: #2C2D2E; }
 
-.modal-title {
-  font-size: 20px;
-  font-weight: 700;
-  margin-bottom: 8px;
-}
+.modal-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
 
-.modal-subtitle {
-  font-size: 14px;
-  color: #818C99;
-  margin-bottom: 16px;
-}
+.modal-subtitle { font-size: 14px; color: #818C99; margin-bottom: 16px; }
 
 .modal-input {
   width: 100%;
@@ -302,21 +173,11 @@
   box-sizing: border-box;
 }
 
-.modal-input:focus {
-  border-color: #4A7BFF;
-}
+.modal-input:focus { border-color: #4A7BFF; }
 
-.modal-error {
-  color: #E53935;
-  font-size: 13px;
-  margin-bottom: 12px;
-}
+.modal-error { color: #E53935; font-size: 13px; margin-bottom: 12px; }
 
-.modal-buttons {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-}
+.modal-buttons { display: flex; gap: 10px; justify-content: flex-end; }
 
 .modal-btn-submit {
   background: #4A7BFF;
@@ -329,14 +190,9 @@
   cursor: pointer;
 }
 
-.modal-btn-submit:hover:not(:disabled) {
-  background: #3A6BE0;
-}
+.modal-btn-submit:hover:not(:disabled) { background: #3A6BE0; }
 
-.modal-btn-submit:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
+.modal-btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .modal-btn-cancel {
   background: #F0F2F5;
@@ -349,25 +205,12 @@
   cursor: pointer;
 }
 
-.modal-btn-cancel:hover {
-  background: #E5E7EB;
-}
+.modal-btn-cancel:hover { background: #E5E7EB; }
 
-/* Адаптив */
 @media (max-width: 768px) {
-  .desktop-nav {
-    display: none;
-  }
-  
-  .mobile-menu-btn {
-    display: block;
-  }
-  
-  .mobile-nav {
-    display: flex;
-  }
-  
-  .header-actions .btn-login {
-    display: none;
-  }
+  .desktop-nav { display: none; }
+  .header-actions .btn-login { display: none; }
+  .header-actions .user-info-link .user-name { display: none; }
+  .mobile-menu-btn { display: block; }
+  .mobile-nav { display: flex; }
 }

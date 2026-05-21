@@ -81,4 +81,37 @@ router.get('/winner/:vkUserId', async (req, res) => {
 });
 
 
+// Статистика пользователя
+router.get('/stats/:vkUserId', async (req, res) => {
+  try {
+    const { vkUserId } = req.params;
+    
+    // Количество участий
+    const participations = await pool.query(
+      'SELECT COUNT(*) FROM participants WHERE vk_user_id = $1',
+      [vkUserId]
+    );
+    
+    // Количество побед (где пользователь winner_id в таблице lotteries)
+    const wins = await pool.query(
+      'SELECT COUNT(*) FROM lotteries WHERE winner_id = $1',
+      [vkUserId]
+    );
+    
+    // Выигранные розыгрыши
+    const wonLotteries = await pool.query(
+      'SELECT id, title, prize FROM lotteries WHERE winner_id = $1',
+      [vkUserId]
+    );
+    
+    res.json({
+      participations: parseInt(participations.rows[0].count),
+      wins: parseInt(wins.rows[0].count),
+      wonLotteries: wonLotteries.rows
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 module.exports = router;
