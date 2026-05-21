@@ -90,3 +90,96 @@
   background: #F0F2F5;
   color: #E53935;
 }
+.login-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.login-modal-content {
+  background: #FFFFFF;
+  border-radius: 8px;
+  padding: 24px;
+  width: 360px;
+  max-width: 90%;
+}
+
+.login-modal-content h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #2C2D2E;
+}
+
+.login-modal-content p {
+  font-size: 14px;
+  color: #818C99;
+  margin-bottom: 12px;
+}
+
+.login-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #D3D9E0;
+  border-radius: 6px;
+  font-size: 15px;
+  outline: none;
+  margin-bottom: 12px;
+}
+
+.login-input:focus {
+  border-color: #4A7BFF;
+}
+
+.login-error {
+  color: #E53935;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.login-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-login-submit {
+  background: #4A7BFF;
+  color: #FFFFFF;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-login-submit:hover {
+  background: #3A6BE0;
+}
+
+.btn-login-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-login-cancel {
+  background: #F0F2F5;
+  color: #626D7A;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-login-cancel:hover {
+  background: #E5E7EB;
+}

@@ -30,7 +30,7 @@ function App() {
 
   return (
     <Router>
-      <Header vkUser={vkUser} onLogout={handleLogout} />
+      <Header vkUser={vkUser} onLogin={handleLogin} onLogout={handleLogout} />
       <main className="main-content">
         <Routes>
           <Route path="/" element={<HomePage />} />
