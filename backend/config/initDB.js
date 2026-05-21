@@ -22,7 +22,7 @@ const initDB = async () => {
         vk_user_id INTEGER NOT NULL,
         first_name VARCHAR(100),
         last_name VARCHAR(100),
-        photo VARCHAR(255),
+        photo VARCHAR(500),
         joined_at TIMESTAMP DEFAULT NOW()
       );
     `);
