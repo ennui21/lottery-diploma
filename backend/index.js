@@ -14,11 +14,6 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// Временно удаляем таблицу для изменения структуры
-pool.query('DROP TABLE IF EXISTS participants CASCADE;')
-  .then(() => console.log('Таблица participants удалена'))
-  .catch(() => {});
-
 initDB();
 
 app.use('/api/lotteries', lotteriesRoutes);
