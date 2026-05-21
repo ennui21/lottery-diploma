@@ -65,14 +65,14 @@ function Header({ vkUser, onLogin, onLogout }) {
         </div>
       </div>
 
-      {showLogin && (
-        <div className="login-modal">
-          <div className="login-modal-content">
+            {showLogin && (
+        <div className="login-modal" onClick={() => setShowLogin(false)}>
+          <div className="login-modal-content" onClick={(e) => e.stopPropagation()}>
             <h3>Вход через VK</h3>
             <p>Введите ссылку на ваш профиль, имя или ID:</p>
             <input
               type="text"
-              placeholder="vk.com/volgr или volgr или 12345678"
+              placeholder="vk.com/volgr или volgr"
               value={profile}
               onChange={(e) => setProfile(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
