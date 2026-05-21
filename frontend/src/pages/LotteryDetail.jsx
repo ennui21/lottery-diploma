@@ -4,6 +4,37 @@ import './LotteryDetail.css';
 
 const API_URL = 'https://diplom-esin.onrender.com/api';
 
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import './LotteryDetail.css';
+
+const API_URL = 'https://diplom-esin.onrender.com/api';
+
+function WinnerInfo({ winnerId }) {
+  const [winner, setWinner] = useState(null);
+
+  useEffect(() => {
+    if (winnerId) {
+      fetch(`https://api.vk.com/method/users.get?user_ids=${winnerId}&fields=photo_100&access_token=vk1.a.AssRIH3FjW6HOPGSbQYJkHNU40_rTfh0cMEqIu63bH99rDdHqqBU1a_Utsa77oOK-wEKI0WgdeLYZm3GoPBtXKd4-UqJxwy4Ir7RTxiHtEcu2QnzNdchCzeASXrspJn7MRhOScX8b-Ee4nIRNyqi1OvwlUxbphur_nkON7my-O9vWSdxJZV1dmSSDJNem7qptryBwfO1i1V7PwoegXQ1ug&v=5.199`)
+        .then(r => r.json())
+        .then(data => {
+          if (data.response) setWinner(data.response[0]);
+        })
+        .catch(() => {});
+    }
+  }, [winnerId]);
+
+  if (!winner) return <span>🎉 Победитель: ID {winnerId}</span>;
+
+  return (
+    <div className="winner-info">
+      <img src={winner.photo_100} alt="" className="winner-avatar" />
+      <span className="winner-name">{winner.first_name} {winner.last_name}</span>
+    </div>
+  );
+}
+
+
 function LotteryDetail({ vkUser }) {
   const { id } = useParams();
   const [lottery, setLottery] = useState(null);
@@ -111,10 +142,10 @@ function LotteryDetail({ vkUser }) {
         <p className="lottery-date">Завершение: {formatDate(lottery.end_date)}</p>
 
         {lottery.winner_id && (
-          <div className="winner-block">
-            🎉 Победитель: ID {lottery.winner_id}
-          </div>
-        )}
+  <div className="winner-block">
+    <WinnerInfo winnerId={lottery.winner_id} />
+  </div>
+)}
 
         {isActive && !lottery.winner_id && (
           <button

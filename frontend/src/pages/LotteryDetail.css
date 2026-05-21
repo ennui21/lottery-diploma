@@ -60,12 +60,28 @@
 .winner-block {
   background: linear-gradient(135deg, #FFF9E6, #FFF3CC);
   border: 1px solid #FFD54F;
-  border-radius: 6px;
-  padding: 14px 18px;
-  font-size: 16px;
-  font-weight: 600;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 12px 0;
+}
+
+.winner-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.winner-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.winner-name {
+  font-size: 18px;
+  font-weight: 700;
   color: #F59E0B;
-  margin-bottom: 16px;
 }
 
 .btn-join {

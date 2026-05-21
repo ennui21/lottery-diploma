@@ -52,9 +52,11 @@ function Header({ vkUser, onLogin, onLogout }) {
       <div className="header-container">
         <Link to="/" className="header-logo">🎁 Розыгрыши</Link>
         <nav className="header-nav">
-          <Link to="/" className="nav-link">Главная</Link>
-          <Link to="/admin" className="nav-link">Админка</Link>
-        </nav>
+  <Link to="/" className="nav-link">Главная</Link>
+  {vkUser && ['232665125', '344405498'].includes(String(vkUser.id)) && (
+    <Link to="/admin" className="nav-link">Админка</Link>
+  )}
+</nav>
         <div className="header-user">
           {vkUser ? (
             <div className="user-info">
