@@ -153,14 +153,11 @@
   font-size: 15px;
 }
 
-/* Колесо фортуны */
+/* Слот-машина */
 .wheel-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.7);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -172,148 +169,110 @@
   border-radius: 12px;
   padding: 30px;
   text-align: center;
-  max-width: 600px;
+  max-width: 450px;
   width: 90%;
 }
 
 .wheel-container h2 {
   margin-bottom: 20px;
-  color: #2C2D2E;
   font-size: 22px;
 }
 
-.wheel-wrapper {
-  position: relative;
-  overflow: hidden;
+.slot-machine {
+  background: #F5F7FA;
   border: 3px solid #4A7BFF;
   border-radius: 12px;
-  background: #F5F7FA;
-  padding: 20px 0;
-  margin-bottom: 20px;
-  height: 140px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+.slot-window {
   display: flex;
-  align-items: center;
+  justify-content: center;
 }
 
-.wheel-arrow {
-  position: absolute;
-  top: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: #E53935;
-  font-size: 36px;
-  z-index: 10;
-  animation: bounce 0.5s infinite alternate;
+.slot-window.slot-spin {
+  animation: flicker 0.15s infinite;
 }
 
-@keyframes bounce {
-  from { transform: translateX(-50%) translateY(0); }
-  to { transform: translateX(-50%) translateY(5px); }
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
 }
 
-.wheel-track {
-  display: flex;
-  gap: 16px;
-  padding: 0 50px;
-}
-
-.wheel-track.spinning {
-  animation: scroll 5s cubic-bezier(0.17, 0.67, 0.12, 0.99) infinite;
-}
-
-@keyframes scroll {
-  0% { transform: translateX(0); }
-  15% { transform: translateX(-150px); }
-  30% { transform: translateX(-400px); }
-  45% { transform: translateX(-200px); }
-  60% { transform: translateX(-600px); }
-  75% { transform: translateX(-300px); }
-  90% { transform: translateX(-500px); }
-  100% { transform: translateX(-350px); }
-}
-
-.wheel-item {
+.slot-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
-  min-width: 100px;
-  padding: 12px;
-  background: white;
-  border-radius: 8px;
-  border: 2px solid transparent;
-  transition: all 0.3s;
-  flex-shrink: 0;
+  gap: 12px;
 }
 
-.wheel-winner-item {
-  border-color: #FFD54F;
-  background: #FFF9E6;
-  transform: scale(1.15);
-  box-shadow: 0 0 20px rgba(255, 213, 79, 0.6);
-}
-
-.wheel-item-avatar {
-  width: 48px;
-  height: 48px;
+.slot-avatar {
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #4A7BFF;
+}
+
+.slot-name {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.slot-participants {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.slot-mini {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  opacity: 0.4;
+  transition: all 0.3s;
+  border: 2px solid transparent;
+}
+
+.slot-mini img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
-.wheel-item-name {
-  font-size: 12px;
-  font-weight: 600;
-  color: #2C2D2E;
-  white-space: nowrap;
+.slot-mini.slot-active {
+  opacity: 1;
+  border-color: #FFD54F;
+  transform: scale(1.2);
+  box-shadow: 0 0 10px rgba(255,213,79,0.5);
 }
 
 .wheel-result {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  margin: 16px 0;
-  padding: 16px;
-  background: #FFF9E6;
-  border-radius: 12px;
-  border: 2px solid #FFD54F;
+  font-size: 20px;
+  font-weight: 700;
+  color: #F59E0B;
+  margin: 12px 0;
   animation: popIn 0.5s ease;
 }
 
 @keyframes popIn {
-  from { transform: scale(0.8); opacity: 0; }
+  from { transform: scale(0.5); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
-}
-
-.wheel-result-avatar {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.wheel-result-label {
-  font-size: 14px;
-  color: #F59E0B;
-  font-weight: 600;
-}
-
-.wheel-result-name {
-  font-size: 22px;
-  font-weight: 700;
-  color: #2C2D2E;
 }
 
 .btn-close-wheel {
   background: #4A7BFF;
   color: white;
-  padding: 12px 40px;
+  padding: 10px 30px;
   border-radius: 8px;
   border: none;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  margin-top: 10px;
 }
 
 .btn-close-wheel:hover {

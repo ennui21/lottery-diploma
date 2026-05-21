@@ -12,10 +12,11 @@ function AdminPage({ vkUser }) {
   const [endDate, setEndDate] = useState('');
   const [message, setMessage] = useState('');
   const [showWheel, setShowWheel] = useState(false);
-  const [winnerData, setWinnerData] = useState(null);
   const [spinning, setSpinning] = useState(false);
-  const [wheelParticipants, setWheelParticipants] = useState([]);
-  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [winnerData, setWinnerData] = useState(null);
+  const [participants, setParticipants] = useState([]);
+  const [currentLotteryId, setCurrentLotteryId] = useState(null);
 
   useEffect(() => {
     fetchLotteries();
@@ -36,20 +37,15 @@ function AdminPage({ vkUser }) {
   const handleCreate = async (e) => {
     e.preventDefault();
     setMessage('');
-
     try {
       const res = await fetch(`${API_URL}/lotteries`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, description, prize, end_date: endDate })
       });
-
       if (res.ok) {
         setMessage('✅ Розыгрыш создан!');
-        setTitle('');
-        setDescription('');
-        setPrize('');
-        setEndDate('');
+        setTitle(''); setDescription(''); setPrize(''); setEndDate('');
         fetchLotteries();
       } else {
         const data = await res.json();
@@ -62,57 +58,57 @@ function AdminPage({ vkUser }) {
 
   const handleSelectWinner = async (lotteryId) => {
     try {
+      // Получаем участников
       const res = await fetch(`${API_URL}/participants/lottery/${lotteryId}`);
-      const data = await res.json();
+      const parts = await res.json();
 
-      if (data.length === 0) {
-        setMessage('❌ Нет участников для выбора победителя');
+      if (parts.length === 0) {
+        setMessage('❌ Нет участников');
         return;
       }
 
-      setWheelParticipants(data);
-      setWinnerData(null);
-      setSelectedIndex(-1);
+      setParticipants(parts);
+      setCurrentLotteryId(lotteryId);
       setShowWheel(true);
       setSpinning(true);
+      setWinnerData(null);
+      setCurrentIndex(0);
 
-      // Крутим 5 секунд
-      setTimeout(async () => {
-        try {
-          const winnerRes = await fetch(`${API_URL}/lotteries/${lotteryId}/select-winner`, {
-            method: 'POST'
-          });
-          const result = await winnerRes.json();
-
-          if (winnerRes.ok) {
-            setWinnerData(result.winner);
-            // Находим индекс победителя
-            const idx = data.findIndex(p => p.vk_user_id === result.winner.vk_user_id);
-            setSelectedIndex(idx);
-            setSpinning(false);
-            fetchLotteries();
-          } else {
-            setMessage(`❌ ${result.error}`);
-            setShowWheel(false);
-            setSpinning(false);
-          }
-        } catch (err) {
-          setMessage('❌ Ошибка соединения');
-          setShowWheel(false);
-          setSpinning(false);
+      // Анимация перебора
+      let count = 0;
+      const totalSteps = 20;
+      const interval = setInterval(() => {
+        setCurrentIndex(prev => (prev + 1) % parts.length);
+        count++;
+        
+        if (count >= totalSteps) {
+          clearInterval(interval);
+          
+          // Делаем запрос к серверу за победителем
+          fetch(`${API_URL}/lotteries/${lotteryId}/select-winner`, { method: 'POST' })
+            .then(r => r.json())
+            .then(result => {
+              if (result.winner) {
+                const winnerIdx = parts.findIndex(p => p.vk_user_id === result.winner.vk_user_id);
+                setCurrentIndex(winnerIdx >= 0 ? winnerIdx : 0);
+                setWinnerData(result.winner);
+                setSpinning(false);
+                fetchLotteries();
+              }
+            })
+            .catch(() => {
+              setSpinning(false);
+            });
         }
-      }, 5000);
+      }, 200);
     } catch (error) {
-      setMessage('❌ Ошибка соединения');
+      setMessage('❌ Ошибка');
     }
   };
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('ru-RU', {
-      day: 'numeric',
-      month: 'long',
-      hour: '2-digit',
-      minute: '2-digit'
+      day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit'
     });
   };
 
@@ -132,39 +128,31 @@ function AdminPage({ vkUser }) {
       <div className="admin-card">
         <h2 className="card-title">Создать новый розыгрыш</h2>
         <form onSubmit={handleCreate} className="admin-form">
-          <input type="text" placeholder="Название розыгрыша" value={title} onChange={(e) => setTitle(e.target.value)} required className="admin-input" />
-          <input type="text" placeholder="Описание (необязательно)" value={description} onChange={(e) => setDescription(e.target.value)} className="admin-input" />
-          <input type="text" placeholder="Приз" value={prize} onChange={(e) => setPrize(e.target.value)} required className="admin-input" />
-          <input type="datetime-local" value={endDate} onChange={(e) => setEndDate(e.target.value)} required className="admin-input" />
-          <button type="submit" className="btn-create">Создать розыгрыш</button>
+          <input type="text" placeholder="Название" value={title} onChange={e => setTitle(e.target.value)} required className="admin-input" />
+          <input type="text" placeholder="Описание" value={description} onChange={e => setDescription(e.target.value)} className="admin-input" />
+          <input type="text" placeholder="Приз" value={prize} onChange={e => setPrize(e.target.value)} required className="admin-input" />
+          <input type="datetime-local" value={endDate} onChange={e => setEndDate(e.target.value)} required className="admin-input" />
+          <button type="submit" className="btn-create">Создать</button>
         </form>
       </div>
 
       {message && <p className="admin-message">{message}</p>}
 
       <div className="admin-card">
-        <h2 className="card-title">Управление розыгрышами</h2>
+        <h2 className="card-title">Управление</h2>
         {lotteries.length === 0 ? (
-          <p className="empty-text">Розыгрышей пока нет</p>
+          <p className="empty-text">Пусто</p>
         ) : (
           <div className="admin-list">
-            {lotteries.map((lottery) => (
-              <div key={lottery.id} className="admin-item">
+            {lotteries.map(l => (
+              <div key={l.id} className="admin-item">
                 <div className="admin-item-info">
-                  <span className="admin-item-title">{lottery.title}</span>
-                  <span className="admin-item-prize">{lottery.prize}</span>
-                  <span className="admin-item-date">до {formatDate(lottery.end_date)}</span>
-                  <span className={`admin-item-status status-${lottery.status}`}>
-                    {lottery.status === 'active' ? 'Активен' : 'Завершён'}
-                  </span>
-                  {lottery.winner_id && (
-                    <span className="admin-item-winner">Победитель: {lottery.winner_id}</span>
-                  )}
+                  <span className="admin-item-title">{l.title}</span>
+                  <span className="admin-item-prize">{l.prize}</span>
+                  <span className={`admin-item-status status-${l.status}`}>{l.status === 'active' ? 'Активен' : 'Завершён'}</span>
                 </div>
-                {lottery.status === 'active' && (
-                  <button className="btn-winner" onClick={() => handleSelectWinner(lottery.id)}>
-                    Выбрать победителя
-                  </button>
+                {l.status === 'active' && (
+                  <button className="btn-winner" onClick={() => handleSelectWinner(l.id)}>Выбрать победителя</button>
                 )}
               </div>
             ))}
@@ -172,44 +160,45 @@ function AdminPage({ vkUser }) {
         )}
       </div>
 
-      {/* Колесо фортуны */}
+      {/* Колесо */}
       {showWheel && (
-        <div className="wheel-overlay">
-          <div className="wheel-container">
-            <h2>{spinning ? '🎰 Выбираем победителя...' : '🎉 Победитель определён!'}</h2>
-            
-            <div className="wheel-wrapper">
-              {/* Стрелка сверху */}
-              <div className="wheel-arrow">▼</div>
-              
-              {/* Бегущая строка участников */}
-              <div className={`wheel-track ${spinning ? 'spinning' : ''}`}>
-                {[...wheelParticipants, ...wheelParticipants, ...wheelParticipants].map((p, i) => (
-                  <div 
-                    key={`${p.id}-${i}`} 
-                    className={`wheel-item ${!spinning && selectedIndex >= 0 && p.vk_user_id === wheelParticipants[selectedIndex]?.vk_user_id ? 'wheel-winner-item' : ''}`}
-                  >
-                    <img src={p.photo || 'https://vk.com/images/camera_100.png'} alt="" className="wheel-item-avatar" />
-                    <span className="wheel-item-name">{p.first_name} {p.last_name}</span>
+        <div className="wheel-overlay" onClick={() => !spinning && setShowWheel(false)}>
+          <div className="wheel-container" onClick={e => e.stopPropagation()}>
+            <h2>{spinning ? '🎰 Выбираем...' : '🎉 Победитель!'}</h2>
+
+            <div className="slot-machine">
+              <div className={`slot-window ${spinning ? 'slot-spin' : ''}`}>
+                {participants.length > 0 && (
+                  <div className="slot-item">
+                    <img 
+                      src={participants[currentIndex]?.photo || 'https://vk.com/images/camera_100.png'} 
+                      alt="" 
+                      className="slot-avatar" 
+                    />
+                    <span className="slot-name">
+                      {participants[currentIndex]?.first_name} {participants[currentIndex]?.last_name}
+                    </span>
                   </div>
-                ))}
+                )}
               </div>
             </div>
 
-            {winnerData && !spinning && (
-              <div className="wheel-result">
-                <img src={winnerData.photo || 'https://vk.com/images/camera_100.png'} alt="" className="wheel-result-avatar" />
-                <div>
-                  <div className="wheel-result-label">🏆 Победитель</div>
-                  <div className="wheel-result-name">{winnerData.first_name} {winnerData.last_name}</div>
+            <div className="slot-participants">
+              {participants.map((p, i) => (
+                <div key={p.id} className={`slot-mini ${i === currentIndex && !spinning ? 'slot-active' : ''}`}>
+                  <img src={p.photo || 'https://vk.com/images/camera_100.png'} alt="" />
                 </div>
+              ))}
+            </div>
+
+            {!spinning && winnerData && (
+              <div className="wheel-result">
+                <span>🏆 {winnerData.first_name} {winnerData.last_name}</span>
               </div>
             )}
 
             {!spinning && (
-              <button onClick={() => setShowWheel(false)} className="btn-close-wheel">
-                Закрыть
-              </button>
+              <button className="btn-close-wheel" onClick={() => setShowWheel(false)}>Закрыть</button>
             )}
           </div>
         </div>
