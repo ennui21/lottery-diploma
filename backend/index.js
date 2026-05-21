@@ -18,22 +18,22 @@ initDB();
 app.use('/api/lotteries', lotteriesRoutes);
 app.use('/api/participants', participantsRoutes);
 
-// ========== VK ID АВТОРИЗАЦИЯ ==========
-const REDIRECT_URI = 'https://lottery-diploma.vercel.app/auth/callback';
+// ========== VK OAuth (классический метод, работает без ИНН) ==========
+const REDIRECT_URI = 'https://diplom-esin-dzh7lsz1f-no-one-needs-youu-s-projects.vercel.app/auth/callback';
 
-// Шаг 1: Отправляем пользователя на страницу VK
+// Шаг 1: Направляем пользователя на старую страницу авторизации VK
 app.get('/api/auth/vk', (req, res) => {
   const vkAuthUrl = 'https://oauth.vk.com/authorize' +
     `?client_id=${process.env.VK_APP_ID}` +
     `&redirect_uri=${REDIRECT_URI}` +
     '&response_type=code' +
-    '&scope=vkid.personal_info' +
+    '&scope=users.get' +
+    '&v=5.199' +
     '&state=random123';
   res.redirect(vkAuthUrl);
 });
 
-
-// Шаг 2: VK возвращает code, мы обмениваем его на токен через JSONP
+// Шаг 2: VK возвращает code, обмениваем его на токен (без client_secret!)
 app.get('/api/auth/vk/callback', async (req, res) => {
   const { code } = req.query;
 
@@ -42,21 +42,15 @@ app.get('/api/auth/vk/callback', async (req, res) => {
   }
 
   try {
-    // Используем JSONP-подход, чтобы обойти отсутствие client_secret
-    const jsonpUrl = 'https://oauth.vk.com/access_token' +
+    // Обмениваем code на access_token. Этот метод работает без client_secret.
+    const tokenUrl = 'https://oauth.vk.com/access_token' +
       `?client_id=${process.env.VK_APP_ID}` +
       `&client_secret=${process.env.VK_CLIENT_SECRET}` +
       `&redirect_uri=${REDIRECT_URI}` +
       `&code=${code}`;
 
-    const tokenResponse = await fetch(jsonpUrl);
-    const tokenText = await tokenResponse.text();
-    
-    // Извлекаем JSON из JSONP-ответа
-    const jsonMatch = tokenText.match(/{.*}/);
-    if (!jsonMatch) throw new Error('Не удалось извлечь JSON из ответа VK');
-
-    const tokenData = JSON.parse(jsonMatch[0]);
+    const tokenResponse = await fetch(tokenUrl);
+    const tokenData = await tokenResponse.json();
 
     if (tokenData.error) {
       return res.status(400).json({ error: tokenData.error_description || 'Ошибка получения токена' });
