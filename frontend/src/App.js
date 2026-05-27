@@ -8,6 +8,9 @@ import AdminPage from './pages/AdminPage';
 import RulesPage from './pages/RulesPage';
 import WinnersPage from './pages/WinnersPage';
 import ProfilePage from './pages/ProfilePage';
+import AboutPage from './pages/AboutPage';
+import FaqPage from './pages/FaqPage';
+import ContactsPage from './pages/ContactsPage';
 import './App.css';
 
 function App() {
@@ -41,6 +44,9 @@ function App() {
           <Route path="/rules" element={<RulesPage />} />
           <Route path="/winners" element={<WinnersPage />} />
           <Route path="/profile" element={<ProfilePage vkUser={vkUser} onLogout={handleLogout} />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/faq" element={<FaqPage />} />
+          <Route path="/contacts" element={<ContactsPage />} />
         </Routes>
       </main>
       <Footer />

@@ -22,7 +22,6 @@ router.post('/join', async (req, res) => {
   try {
     const { lottery_id, vk_user_id, first_name, last_name, photo } = req.body;
     
-    // Проверяем подписку через VK API
     const isMember = await checkIsMember(vk_user_id);
     if (!isMember) {
       return res.status(400).json({ 
@@ -30,7 +29,6 @@ router.post('/join', async (req, res) => {
       });
     }
     
-    // Проверяем, что розыгрыш активен
     const lottery = await pool.query('SELECT * FROM lotteries WHERE id = $1', [lottery_id]);
     if (lottery.rows.length === 0) {
       return res.status(404).json({ error: 'Розыгрыш не найден' });
@@ -39,7 +37,6 @@ router.post('/join', async (req, res) => {
       return res.status(400).json({ error: 'Розыгрыш уже завершён' });
     }
     
-    // Проверяем, не участвует ли уже пользователь
     const existing = await pool.query(
       'SELECT * FROM participants WHERE lottery_id = $1 AND vk_user_id = $2',
       [lottery_id, vk_user_id]
