@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './HomePage.css';
 
-const API_URL = 'https://diplom-esin.onrender.com/api';
+const API_URL = 'https://lottery-diploma.onrender.com/api';
 
 function HomePage({ vkUser }) {
   const [activeLotteries, setActiveLotteries] = useState([]);

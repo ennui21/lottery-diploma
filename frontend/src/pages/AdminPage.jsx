@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './AdminPage.css';
 
-const API_URL = 'https://diplom-esin.onrender.com/api';
+const API_URL = 'https://lottery-diploma.onrender.com/api';
 const ADMIN_IDS = ['232665125', '344405498'];
 
 function AdminPage({ vkUser }) {

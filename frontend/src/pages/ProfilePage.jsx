@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './ProfilePage.css';
 
-const API_URL = 'https://diplom-esin.onrender.com/api';
+const API_URL = 'https://lottery-diploma.onrender.com/api';
 
 function ProfilePage({ vkUser, onLogout }) {
   const [stats, setStats] = useState({ wins: 0, participations: 0, winRate: 0 });

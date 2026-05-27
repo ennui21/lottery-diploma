@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './WinnersPage.css';
 
-const API_URL = 'https://diplom-esin.onrender.com/api';
+const API_URL = 'https://lottery-diploma.onrender.com/api';
 
 function WinnersPage() {
   const [lotteries, setLotteries] = useState([]);

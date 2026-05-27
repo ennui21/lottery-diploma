@@ -18,7 +18,7 @@ function Header({ vkUser, onLogin, onLogout }) {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('https://diplom-esin.onrender.com/api/auth/login', {
+      const res = await fetch('https://lottery-diploma.onrender.com/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ profile })
